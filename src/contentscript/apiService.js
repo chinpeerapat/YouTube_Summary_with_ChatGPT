@@ -1,12 +1,11 @@
 /**
  * API Service for OpenAI ChatGPT API calls
- * Handles communication with OpenAI's API to generate summaries
+ * Proxies requests through the background service worker to bypass CORS
  */
 
 class ApiService {
   constructor() {
     this.apiKey = null;
-    this.apiEndpoint = 'https://api.openai.com/v1/chat/completions';
     this.model = 'gpt-3.5-turbo'; // Default model
   }
 
@@ -33,72 +32,41 @@ class ApiService {
   }
 
   /**
-   * Generate summary using OpenAI API
+   * Generate summary using OpenAI API (via background service worker)
    * @param {string} prompt - The prompt to send to the API
-   * @param {function} onProgress - Callback for streaming updates (optional)
    * @returns {Promise<string>} The generated summary
    */
-  async generateSummary(prompt, onProgress = null) {
+  async generateSummary(prompt) {
     if (!this.apiKey) {
       throw new Error('API key not configured. Please set your OpenAI API key in the extension options.');
     }
 
-    try {
-      const response = await fetch(this.apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          message: 'generateSummary',
+          prompt: prompt,
+          apiKey: this.apiKey,
+          model: this.model
         },
-        body: JSON.stringify({
-          model: this.model,
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful assistant that creates concise and informative summaries of YouTube video transcripts.'
-            },
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 1000,
-          stream: false
-        })
-      });
+        (response) => {
+          if (chrome.runtime.lastError) {
+            reject(new Error('Failed to communicate with extension: ' + chrome.runtime.lastError.message));
+            return;
+          }
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-
-        if (response.status === 401) {
-          throw new Error('Invalid API key. Please check your OpenAI API key in the extension options.');
-        } else if (response.status === 429) {
-          throw new Error('Rate limit exceeded. Please try again later.');
-        } else if (response.status === 400) {
-          throw new Error(`Bad request: ${errorData.error?.message || 'Invalid request parameters'}`);
-        } else {
-          throw new Error(`API error (${response.status}): ${errorData.error?.message || 'Unknown error'}`);
+          if (response.success) {
+            resolve(response.data);
+          } else {
+            reject(new Error(response.error));
+          }
         }
-      }
-
-      const data = await response.json();
-
-      if (!data.choices || !data.choices[0] || !data.choices[0].message) {
-        throw new Error('Invalid response format from API');
-      }
-
-      return data.choices[0].message.content.trim();
-    } catch (error) {
-      if (error.message.includes('fetch')) {
-        throw new Error('Network error. Please check your internet connection.');
-      }
-      throw error;
-    }
+      );
+    });
   }
 
   /**
-   * Generate summary with streaming support
+   * Generate summary with streaming support (via background service worker)
    * @param {string} prompt - The prompt to send to the API
    * @param {function} onChunk - Callback for each chunk of text
    * @returns {Promise<string>} The complete generated summary
@@ -108,104 +76,65 @@ class ApiService {
       throw new Error('API key not configured. Please set your OpenAI API key in the extension options.');
     }
 
-    try {
-      const response = await fetch(this.apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey}`
-        },
-        body: JSON.stringify({
-          model: this.model,
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a helpful assistant that creates concise and informative summaries of YouTube video transcripts.'
-            },
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          temperature: 0.7,
-          max_tokens: 1000,
-          stream: true
-        })
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(`API error (${response.status}): ${errorData.error?.message || 'Unknown error'}`);
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
+    return new Promise((resolve, reject) => {
+      const port = chrome.runtime.connect({ name: 'summaryStream' });
       let fullText = '';
 
-      while (true) {
-        const { done, value } = await reader.read();
-
-        if (done) break;
-
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(line => line.trim() !== '');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-
-            if (data === '[DONE]') {
-              continue;
-            }
-
-            try {
-              const parsed = JSON.parse(data);
-              const content = parsed.choices[0]?.delta?.content;
-
-              if (content) {
-                fullText += content;
-                if (onChunk) {
-                  onChunk(content);
-                }
-              }
-            } catch (e) {
-              console.warn('Failed to parse chunk:', e);
-            }
+      port.onMessage.addListener((msg) => {
+        if (msg.type === 'chunk') {
+          fullText += msg.data;
+          if (onChunk) {
+            onChunk(msg.data);
           }
+        } else if (msg.type === 'done') {
+          port.disconnect();
+          resolve(fullText);
+        } else if (msg.type === 'error') {
+          port.disconnect();
+          reject(new Error(msg.error));
         }
-      }
+      });
 
-      return fullText;
-    } catch (error) {
-      if (error.message.includes('fetch')) {
-        throw new Error('Network error. Please check your internet connection.');
-      }
-      throw error;
-    }
+      port.onDisconnect.addListener(() => {
+        if (chrome.runtime.lastError) {
+          reject(new Error('Connection lost: ' + chrome.runtime.lastError.message));
+        }
+      });
+
+      // Start the stream
+      port.postMessage({
+        action: 'startStream',
+        prompt: prompt,
+        apiKey: this.apiKey,
+        model: this.model
+      });
+    });
   }
 
   /**
-   * Test the API key
+   * Test the API key (via background service worker)
    */
   async testApiKey(apiKey) {
-    try {
-      const response = await fetch(this.apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          message: 'testApiKey',
+          apiKey: apiKey
         },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: 'Hello' }],
-          max_tokens: 5
-        })
-      });
+        (response) => {
+          if (chrome.runtime.lastError) {
+            reject(new Error('Failed to communicate with extension: ' + chrome.runtime.lastError.message));
+            return;
+          }
 
-      return response.ok;
-    } catch (error) {
-      return false;
-    }
+          if (response.success) {
+            resolve(response.isValid);
+          } else {
+            reject(new Error(response.error));
+          }
+        }
+      );
+    });
   }
 }
 

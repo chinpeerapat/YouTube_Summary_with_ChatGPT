@@ -123,29 +123,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Test API key function
+  // Test API key function (via background service worker)
   async function testApiKey(apiKey) {
-    const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
-
-    try {
-      const response = await fetch(apiEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
+    return new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage(
+        {
+          message: 'testApiKey',
+          apiKey: apiKey
         },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: 'Hello' }],
-          max_tokens: 5
-        })
-      });
+        (response) => {
+          if (chrome.runtime.lastError) {
+            console.error('Failed to communicate with extension:', chrome.runtime.lastError);
+            resolve(false);
+            return;
+          }
 
-      return response.ok;
-    } catch (error) {
-      console.error('API test error:', error);
-      return false;
-    }
+          if (response.success) {
+            resolve(response.isValid);
+          } else {
+            console.error('API test error:', response.error);
+            resolve(false);
+          }
+        }
+      );
+    });
   }
 
   // Show status message
