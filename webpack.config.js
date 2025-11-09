@@ -26,6 +26,12 @@ const plugins = [
             to({ context, absoluteFilename }) {
                 return "contentscript/[name][ext]";
             }
+        },{
+            from: "src/options/options.html",
+            to: "options/options.html"
+        },{
+            from: "src/options/options.css",
+            to: "options/options.css"
         }]
     }),
     new WriteFilePlugin()
@@ -62,6 +68,7 @@ const config = {
     entry: {
         'contentscript/index': path.join(__dirname, "src", "contentscript", "index.js"),
         'background': path.join(__dirname, "background.js"),
+        'options/options': path.join(__dirname, "src", "options", "options.js"),
     },
     output: {
         path: path.join(__dirname, "dist"),

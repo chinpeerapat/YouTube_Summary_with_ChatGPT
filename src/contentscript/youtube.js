@@ -4,6 +4,7 @@ import { getLangOptionsWithLink, getTranscriptHTML } from "./transcript";
 import { getSearchParam } from "./searchParam";
 import { getChunckedTranscripts, getSummaryPrompt } from "./prompt";
 import { copyTextToClipboard } from "./copy";
+import apiService from "./apiService";
 
 
 export function insertSummaryBtn() {
@@ -62,6 +63,13 @@ export function insertSummaryBtn() {
                 </div>
             </div>
             <div id="yt_ai_summary_body" class="yt_ai_summary_body">
+                <div id="yt_ai_summary_result" class="yt_ai_summary_result" style="display: none;">
+                    <div class="yt_ai_summary_result_header">
+                        <h3>AI Summary</h3>
+                        <button id="yt_ai_summary_close_result" class="yt_ai_summary_close_btn">✕</button>
+                    </div>
+                    <div id="yt_ai_summary_result_content" class="yt_ai_summary_result_content"></div>
+                </div>
                 <div id="yt_ai_summary_lang_select" class="yt_ai_summary_lang_select"></div>
                 <div id="yt_ai_summary_text" class="yt_ai_summary_text"></div>
             </div>
@@ -92,19 +100,21 @@ export function insertSummaryBtn() {
         })
 
         // Event Listener: AI Summary
-        document.querySelector("#yt_ai_summary_header_summary").addEventListener("click", (e) => {
+        document.querySelector("#yt_ai_summary_header_summary").addEventListener("click", async (e) => {
             e.stopPropagation();
-            const prompt = copyTranscriptAndPrompt();
-            setTimeout(() => {
-                chrome.runtime.sendMessage({ message: "setPrompt", prompt: prompt });
-                window.open("https://chat.openai.com/chat?ref=glasp", "_blank");
-            }, 500);
+            await generateInlineSummary();
         })
 
         // Event Listener: Jump to Current Timestamp
         document.querySelector("#yt_ai_summary_header_track").addEventListener("click", (e) => {
             e.stopPropagation();
             scrollIntoCurrTimeDiv();
+        })
+
+        // Event Listener: Close Summary Result
+        document.querySelector("#yt_ai_summary_close_result").addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeSummaryResult();
         })
 
         // Event Listener: Toggle Transcript Body
@@ -276,4 +286,106 @@ function waitForElm(selector) {
             subtree: true
         });
     });
+}
+
+async function generateInlineSummary() {
+    try {
+        // Initialize API service
+        const initialized = await apiService.initialize();
+
+        if (!initialized || !apiService.isConfigured()) {
+            // Fallback to old behavior - open ChatGPT in new tab
+            const prompt = copyTranscriptAndPrompt();
+            setTimeout(() => {
+                chrome.runtime.sendMessage({ message: "setPrompt", prompt: prompt });
+                window.open("https://chat.openai.com/chat?ref=glasp", "_blank");
+            }, 500);
+            return;
+        }
+
+        // Show loading state
+        showSummaryLoading();
+
+        // Get transcript data
+        const textEls = document.getElementsByClassName("yt_ai_summary_transcript_text");
+        const textData = Array.from(textEls).map((textEl, i) => {
+            return {
+                text: textEl.textContent.trim(),
+                index: i,
+            }
+        });
+
+        const text = getChunckedTranscripts(textData, textData);
+        const prompt = getSummaryPrompt(text);
+
+        // Check if streaming is enabled
+        const result = await chrome.storage.sync.get(['useStreaming']);
+        const useStreaming = result.useStreaming || false;
+
+        if (useStreaming) {
+            // Generate summary with streaming
+            const summaryContent = document.querySelector("#yt_ai_summary_result_content");
+            summaryContent.innerHTML = '';
+
+            await apiService.generateSummaryStream(prompt, (chunk) => {
+                summaryContent.textContent += chunk;
+            });
+        } else {
+            // Generate summary without streaming
+            const summary = await apiService.generateSummary(prompt);
+            showSummaryResult(summary);
+        }
+
+    } catch (error) {
+        showSummaryError(error.message);
+    }
+}
+
+function showSummaryLoading() {
+    const resultDiv = document.querySelector("#yt_ai_summary_result");
+    const contentDiv = document.querySelector("#yt_ai_summary_result_content");
+
+    resultDiv.style.display = 'block';
+    contentDiv.innerHTML = `
+        <div class="yt_ai_summary_loading_container">
+            <svg class="yt_ai_summary_loading" style="display: block;width: 48px;margin: 20px auto;" width="48" height="48" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M100 36C59.9995 36 37 66 37 99C37 132 61.9995 163.5 100 163.5C138 163.5 164 132 164 99" stroke="#5C94FF" stroke-width="6"/>
+            </svg>
+            <p style="text-align: center; color: #666;">Generating summary...</p>
+        </div>
+    `;
+}
+
+function showSummaryResult(summary) {
+    const resultDiv = document.querySelector("#yt_ai_summary_result");
+    const contentDiv = document.querySelector("#yt_ai_summary_result_content");
+
+    resultDiv.style.display = 'block';
+    contentDiv.innerHTML = `<div class="yt_ai_summary_result_text">${summary.replace(/\n/g, '<br>')}</div>`;
+}
+
+function showSummaryError(errorMessage) {
+    const resultDiv = document.querySelector("#yt_ai_summary_result");
+    const contentDiv = document.querySelector("#yt_ai_summary_result_content");
+
+    resultDiv.style.display = 'block';
+    contentDiv.innerHTML = `
+        <div class="yt_ai_summary_error">
+            <p><strong>Error:</strong> ${errorMessage}</p>
+            <p style="margin-top: 10px;">
+                <a href="#" id="yt_ai_summary_open_settings" style="color: #667eea; text-decoration: underline;">Open Extension Settings</a>
+            </p>
+        </div>
+    `;
+
+    // Add event listener for settings link
+    document.querySelector("#yt_ai_summary_open_settings")?.addEventListener("click", (e) => {
+        e.preventDefault();
+        chrome.runtime.sendMessage({ message: "openOptions" });
+    });
+}
+
+function closeSummaryResult() {
+    const resultDiv = document.querySelector("#yt_ai_summary_result");
+    resultDiv.style.display = 'none';
 }

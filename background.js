@@ -19,5 +19,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     } else if (request.message === "getPrompt") {
         sendResponse({ prompt: prompt });
         prompt = ""; // Reset prompt
+    } else if (request.message === "openOptions") {
+        chrome.runtime.openOptionsPage();
     }
 });

@@ -12,6 +12,13 @@
       "48": "images/48.png"
     }
   },
+  "options_page": "options/options.html",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*"
+  ],
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*", "https://chat.openai.com/*"],

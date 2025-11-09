@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Summary - Settings</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>YouTube Summary with ChatGPT</h1>
+      <p class="subtitle">Extension Settings</p>
+    </header>
+
+    <main>
+      <section class="settings-section">
+        <h2>OpenAI API Configuration</h2>
+        <p class="description">
+          To use the inline summary feature, you need to provide your OpenAI API key.
+          You can get one from <a href="https://platform.openai.com/api-keys" target="_blank">OpenAI's platform</a>.
+        </p>
+
+        <div class="form-group">
+          <label for="apiKey">OpenAI API Key:</label>
+          <input
+            type="password"
+            id="apiKey"
+            placeholder="sk-..."
+            autocomplete="off"
+          />
+          <button type="button" id="toggleApiKey" class="toggle-btn">Show</button>
+        </div>
+
+        <div class="form-group">
+          <label for="model">Model:</label>
+          <select id="model">
+            <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast & Affordable)</option>
+            <option value="gpt-4">GPT-4 (More Accurate)</option>
+            <option value="gpt-4-turbo-preview">GPT-4 Turbo (Latest)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="useStreaming" />
+            Enable streaming (see results as they're generated)
+          </label>
+        </div>
+
+        <div class="button-group">
+          <button type="button" id="testApiKey" class="secondary-btn">Test API Key</button>
+          <button type="button" id="saveSettings" class="primary-btn">Save Settings</button>
+        </div>
+
+        <div id="statusMessage" class="status-message"></div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Usage Information</h2>
+        <div class="info-box">
+          <h3>How it works:</h3>
+          <ol>
+            <li>Navigate to any YouTube video</li>
+            <li>Click the "View AI Summary" button in the sidebar widget</li>
+            <li>The summary will appear directly on the YouTube page</li>
+            <li>No need to open ChatGPT in a new tab!</li>
+          </ol>
+        </div>
+
+        <div class="info-box warning">
+          <h3>Important Notes:</h3>
+          <ul>
+            <li>Your API key is stored locally in your browser and never sent anywhere except OpenAI</li>
+            <li>Using the API will incur costs on your OpenAI account</li>
+            <li>GPT-3.5 Turbo is recommended for cost-effectiveness</li>
+            <li>Keep your API key secure and don't share it with others</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="settings-section">
+        <h2>Fallback Mode</h2>
+        <p class="description">
+          If you don't have an API key, the extension will continue to work in fallback mode by opening ChatGPT in a new tab.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <p>YouTube Summary with ChatGPT v1.0.4</p>
+      <p>
+        <a href="https://github.com/kazuki-sf/youtube_summary" target="_blank">GitHub</a> |
+        <a href="https://chrome.google.com/webstore" target="_blank">Chrome Web Store</a>
+      </p>
+    </footer>
+  </div>
+
+  <script src="options.bundle.js"></script>
+</body>
+</html>
