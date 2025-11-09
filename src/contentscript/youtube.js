@@ -327,8 +327,17 @@ async function generateInlineSummary() {
             const summaryContent = document.querySelector("#yt_ai_summary_result_content");
             summaryContent.innerHTML = '';
 
+            // Create text container with proper structure
+            const textDiv = document.createElement('div');
+            textDiv.className = 'yt_ai_summary_result_text';
+            summaryContent.appendChild(textDiv);
+
+            // Show the result container
+            const resultDiv = document.querySelector("#yt_ai_summary_result");
+            resultDiv.style.display = 'block';
+
             await apiService.generateSummaryStream(prompt, (chunk) => {
-                summaryContent.textContent += chunk;
+                textDiv.textContent += chunk; // Safe - textContent automatically escapes
             });
         } else {
             // Generate summary without streaming
@@ -361,7 +370,14 @@ function showSummaryResult(summary) {
     const contentDiv = document.querySelector("#yt_ai_summary_result_content");
 
     resultDiv.style.display = 'block';
-    contentDiv.innerHTML = `<div class="yt_ai_summary_result_text">${summary.replace(/\n/g, '<br>')}</div>`;
+
+    // Create text container and use textContent to prevent XSS
+    const textDiv = document.createElement('div');
+    textDiv.className = 'yt_ai_summary_result_text';
+    textDiv.textContent = summary; // Safe - textContent automatically escapes HTML
+
+    contentDiv.innerHTML = ''; // Clear previous content
+    contentDiv.appendChild(textDiv);
 }
 
 function showSummaryError(errorMessage) {
@@ -369,17 +385,36 @@ function showSummaryError(errorMessage) {
     const contentDiv = document.querySelector("#yt_ai_summary_result_content");
 
     resultDiv.style.display = 'block';
-    contentDiv.innerHTML = `
-        <div class="yt_ai_summary_error">
-            <p><strong>Error:</strong> ${errorMessage}</p>
-            <p style="margin-top: 10px;">
-                <a href="#" id="yt_ai_summary_open_settings" style="color: #667eea; text-decoration: underline;">Open Extension Settings</a>
-            </p>
-        </div>
-    `;
+
+    // Create error container safely to prevent XSS
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'yt_ai_summary_error';
+
+    const errorText = document.createElement('p');
+    const strongTag = document.createElement('strong');
+    strongTag.textContent = 'Error:';
+    errorText.appendChild(strongTag);
+    errorText.appendChild(document.createTextNode(' ' + errorMessage)); // Safe - createTextNode escapes
+
+    const linkParagraph = document.createElement('p');
+    linkParagraph.style.marginTop = '10px';
+
+    const settingsLink = document.createElement('a');
+    settingsLink.href = '#';
+    settingsLink.id = 'yt_ai_summary_open_settings';
+    settingsLink.style.color = '#667eea';
+    settingsLink.style.textDecoration = 'underline';
+    settingsLink.textContent = 'Open Extension Settings';
+
+    linkParagraph.appendChild(settingsLink);
+    errorDiv.appendChild(errorText);
+    errorDiv.appendChild(linkParagraph);
+
+    contentDiv.innerHTML = ''; // Clear previous content
+    contentDiv.appendChild(errorDiv);
 
     // Add event listener for settings link
-    document.querySelector("#yt_ai_summary_open_settings")?.addEventListener("click", (e) => {
+    settingsLink.addEventListener("click", (e) => {
         e.preventDefault();
         chrome.runtime.sendMessage({ message: "openOptions" });
     });
