@@ -143,16 +143,26 @@ async function handleGenerateSummaryStream(prompt, apiKey, model, onChunk) {
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
+    let buffer = ''; // Buffer to accumulate incomplete lines
 
     while (true) {
         const { done, value } = await reader.read();
 
         if (done) break;
 
-        const chunk = decoder.decode(value);
-        const lines = chunk.split('\n').filter(line => line.trim() !== '');
+        // Use { stream: true } to handle multi-byte UTF-8 characters split across chunks
+        buffer += decoder.decode(value, { stream: true });
+
+        // Split on newlines, but keep the last incomplete line in the buffer
+        const lines = buffer.split('\n');
+
+        // The last element might be incomplete, so we keep it in the buffer
+        buffer = lines.pop() || '';
 
         for (const line of lines) {
+            // Skip empty lines
+            if (line.trim() === '') continue;
+
             if (line.startsWith('data: ')) {
                 const data = line.slice(6);
 
@@ -168,7 +178,25 @@ async function handleGenerateSummaryStream(prompt, apiKey, model, onChunk) {
                         onChunk(content);
                     }
                 } catch (e) {
-                    console.warn('Failed to parse chunk:', e);
+                    console.warn('Failed to parse SSE data:', data, e);
+                }
+            }
+        }
+    }
+
+    // Process any remaining data in the buffer after the stream ends
+    if (buffer.trim() !== '') {
+        if (buffer.startsWith('data: ')) {
+            const data = buffer.slice(6);
+            if (data !== '[DONE]') {
+                try {
+                    const parsed = JSON.parse(data);
+                    const content = parsed.choices[0]?.delta?.content;
+                    if (content) {
+                        onChunk(content);
+                    }
+                } catch (e) {
+                    console.warn('Failed to parse final SSE data:', data, e);
                 }
             }
         }
