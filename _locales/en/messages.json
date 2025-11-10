@@ -1,0 +1,149 @@
+{
+    "extensionName": {
+        "message": "Ask on YouTube using ChatGPT"
+    },
+    "shortExtensionName": {
+        "message": "Ask on YouTube"
+    },
+    "extensionDescription": {
+        "message": "The essential tool for effectively gathering YouTube insights."
+    },
+    "settings": {
+        "message": "Settings"
+    },
+    "history": {
+        "message": "Question History"
+    },
+    "noHistory": {
+        "message": "No questions in history yet"
+    },
+    "saved": {
+        "message": "Saved!"
+    },
+    "geminiAPIDescription": {
+        "message": "Set Gemini API to get suggested questions in the ask dialog. <a href='https://aistudio.google.com/app/apikey' target='_blank'>Get API Key</a> for free!"
+    },
+    "geminiAPIKeyPlaceholder": {
+        "message": "Enter your Gemini API key"
+    },
+    "questionButtonText": {
+        "message": "Question"
+    },
+    "questionShortcutTooltip": {
+        "message": "Press 'Q' to quickly open the question dialog"
+    },
+    "requestButtonName": {
+        "message": "Ask"
+    },
+    "requestingButtonName": {
+        "message": "Asking.."
+    },
+    "questionDialogTitle": {
+        "message": "Ask to ChatGPT"
+    },
+    "favorites": {
+        "message": "Favorites"
+    },
+    "suggestions": {
+        "message": "Suggestions"
+    },
+    "recents": {
+        "message": "Recents"
+    },
+    "defaultFavoriteQuestion1": {
+        "message": "What is the main idea of this content? Just the conclusion briefly."
+    },
+    "defaultFavoriteQuestion2": {
+        "message": "Please summarize briefly, focusing on the key points."
+    },
+    "defaultFavoriteQuestion3": {
+        "message": "What's the title talking about? Just a quick explanation."
+    },
+    "defaultFavoriteQuestion4": {
+        "message": "Explain this in a simple way that's easy to understand."
+    },
+    "extensionContextInvalidatedError": {
+        "message": "The Chrome extension has been updated. Please refresh the page and try again."
+    },
+    "invalidResponseError": {
+        "message": "Response processing failed. Please try again later."
+    },
+    "invalidRequestError": {
+        "message": "Invalid request, please try again later."
+    },
+    "transcriptNotFoundError": {
+        "message": "Video transcript not found. Required to ask the AI."
+    },
+    "failedToLoadDefaultQuestionError": {
+        "message": "Failed to load default question, please try again later."
+    },
+    "failedToLoadQuestionsError": {
+        "message": "Failed to load questions, please try again later."
+    },
+    "noRecentQuestionsError": {
+        "message": "No recent questions"
+    },
+    "geminiApiKeyNotSetError": {
+        "message": "Gemini API key not set. Please set a valid Gemini API key on <a href='#' class='settings'>Settings</a> of Ask on YouTube!"
+    },
+    "geminiApiKeyNotValidError": {
+        "message": "Invalid Gemini API key. Please set a valid Gemini API key on <a href='#' class='settings'>Settings</a> of Ask on YouTube!"
+    },
+    "unknownError": {
+        "message": "An unknown error occurred. Please refresh the page and try again."
+    },
+    "exampleScreenshot": {
+        "message": "Example screenshot"
+    },
+    "chatgptLoginRequired": {
+        "message": "Ask on YouTube: ChatGPT login is required to request long text. Please log in and try again."
+    },
+    "attachFilename": {
+        "message": "transcript.txt"
+    },
+    "attachCommentsFilename": {
+        "message": "comments.txt"
+    },
+    "chatgptMorePages": {
+        "message": "Do not respond yet. There are more pages to come."
+    },
+    "privacy": {
+        "message": "Privacy Policy"
+    },
+    "feedback": {
+        "message": "Feedback"
+    },
+    "show": {
+        "message": "Show"
+    },
+    "hide": {
+        "message": "Hide"
+    },
+    "showAPIKey": {
+        "message": "Show API Key"
+    },
+    "hideAPIKey": {
+        "message": "Hide API Key"
+    },
+    "viewAnswer": {
+        "message": "View Answer"
+    },
+    "geminiApiUnavailableError": {
+        "message": "Gemini API service is currently unavailable. Please try again later."
+    },
+    "geminiApiTimeoutError": {
+        "message": "Request to Gemini API timed out. Please try again."
+    },
+    "stopLoadingButtonName": {
+        "message": "Stop"
+    },
+    "loadMoreButtonName": {
+        "message": "Load more"
+    },
+    "transcriptLabelName": {
+        "message": "Transcript"
+    },
+    "commentsLabelName": {
+        "message": "Comments"
+    }
+}

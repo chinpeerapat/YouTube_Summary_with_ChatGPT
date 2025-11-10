@@ -1,0 +1,146 @@
+{
+    "extensionName": {
+        "message": "YouTube 질문하기 - ChatGPT 요약"
+    },
+    "shortExtensionName": {
+        "message": "YouTube 질문하기"
+    },
+    "extensionDescription": {
+        "message": "YouTube의 정보를 효과적으로 얻기 위한 필수 도구"
+    },
+    "settings": {
+        "message": "설정"
+    },
+    "history": {
+        "message": "질문 내역"
+    },
+    "noHistory": {
+        "message": "아직 질문 내역이 없습니다."
+    },
+    "saved": {
+        "message": "저장됨!"
+    },
+    "geminiAPIDescription": {
+        "message": "Gemini API를 설정하면 질문 창에서 질문 제안을 받을 수 있습니다. <a href='https://aistudio.google.com/app/apikey' target='_blank'>Get API Key</a>에서 무료로 발급 받으세요!"
+    },
+    "geminiAPIKeyPlaceholder": {
+        "message": "Gemini API 키 입력"
+    },
+    "questionButtonText": {
+        "message": "질문하기"
+    },
+    "questionShortcutTooltip": {
+        "message": "'Q'를 눌러 빠르게 질문 창 열기"
+    },
+    "requestButtonName": {
+        "message": "요청"
+    },
+    "requestingButtonName": {
+        "message": "요청 중.."
+    },
+    "questionDialogTitle": {
+        "message": "ChatGPT에 질문하기"
+    },
+    "favorites": {
+        "message": "즐겨찾기"
+    },
+    "suggestions": {
+        "message": "제안"
+    },
+    "recents": {
+        "message": "최근"
+    },
+    "defaultFavoriteQuestion1": {
+        "message": "여기서 말하는 주요 요점이 무엇인가요? 결론만 간단히 설명해주세요."
+    },
+    "defaultFavoriteQuestion2": {
+        "message": "핵심 사항 중심으로 간단히 요약 정리해주세요."
+    },
+    "defaultFavoriteQuestion3": {
+        "message": "제목에서 말하는 것에 대한 답을 간단히 알려주세요."
+    },
+    "defaultFavoriteQuestion4": {
+        "message": "이해하기 쉽게 간단히 설명해주세요."
+    },
+    "extensionContextInvalidatedError": {
+        "message": "Chrome 확장 프로그램이 업데이트되었습니다. 이 페이지를 새로고침 후 다시 시도해주세요."
+    },
+    "invalidResponseError": {
+        "message": "응답 처리에 문제가 발생했습니다. 나중에 다시 시도해주세요."
+    },
+    "invalidRequestError": {
+        "message": "유효하지 않은 요청입니다. 나중에 다시 시도해주세요."
+    },
+    "transcriptNotFoundError": {
+        "message": "영상 자막을 찾을 수 없습니다. AI로 질문하기 위해 필요합니다."
+    },
+    "failedToLoadDefaultQuestionError": {
+        "message": "기본 질문을 불러오는데 실패했습니다. 나중에 다시 시도해주세요."
+    },
+    "failedToLoadQuestionsError": {
+        "message": "질문 목록을 불러오는데 실패했습니다. 나중에 다시 시도해주세요."
+    },
+    "noRecentQuestionsError": {
+        "message": "최근 질문이 없습니다."
+    },
+    "geminiApiKeyNotSetError": {
+        "message": "Gemini API 키가 설정되지 않았습니다. Ask on YouTube의 <a href='#' class='settings'>설정</a>에 유효한 Gemini API 키를 설정해주세요."
+    },
+    "geminiApiKeyNotValidError": {
+        "message": "유효하지 않은 Gemini API 키입니다. Ask on YouTube의 <a href='#' class='settings'>설정</a>에 유효한 Gemini API 키를 설정해주세요."
+    },
+    "unknownError": {
+        "message": "알 수 없는 오류가 발생했습니다. 새로고침 후 다시 시도해주세요."
+    },
+    "exampleScreenshot": {
+        "message": "스크린샷 예시"
+    },
+    "chatgptLoginRequired": {
+        "message": "Ask on YouTube: 긴 텍스트를 요청하기 위해서 ChatGPT 로그인이 필요합니다. 로그인 후 다시 시도해주세요."
+    },
+    "attachFilename": {
+        "message": "자막.txt"
+    },
+    "attachCommentsFilename": {
+        "message": "댓글.txt"
+    },
+    "privacy": {
+        "message": "개인정보 처리방침"
+    },
+    "feedback": {
+        "message": "문의하기"
+    },
+    "show": {
+        "message": "표시"
+    },
+    "hide": {
+        "message": "숨기기"
+    },
+    "showAPIKey": {
+        "message": "API 키 표시"
+    },
+    "hideAPIKey": {
+        "message": "API 키 숨기기"
+    },
+    "viewAnswer": {
+        "message": "답변 보기"
+    },
+    "geminiApiUnavailableError": {
+        "message": "Gemini API 서비스가 현재 사용할 수 없습니다. 나중에 다시 시도해주세요."
+    },
+    "geminiApiTimeoutError": {
+        "message": "Gemini API 요청 시간이 초과되었습니다. 다시 시도해주세요."
+    },
+    "stopLoadingButtonName": {
+        "message": "중지"
+    },
+    "loadMoreButtonName": {
+        "message": "더 불러오기"
+    },
+    "transcriptLabelName": {
+        "message": "자막"
+    },
+    "commentsLabelName": {
+        "message": "댓글"
+    }
+}

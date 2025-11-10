@@ -1,0 +1,33 @@
+name: Release
+
+on:
+    push:
+        tags:
+            - "v*.*.*" # Trigger on version tags
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build release
+              run: npm run build-release
+
+            - name: Create Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  files: ask-on-youtube-v*.zip
+                  generate_release_notes: true
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

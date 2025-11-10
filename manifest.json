@@ -1,29 +1,58 @@
 {
-  "name": "YouTube Summary with ChatGPT",
-  "version": "1.0.4",
-  "manifest_version": 3,
-  "description": "Use ChatGPT to summarize YouTube videos",
-  "background": {
-    "service_worker": "background.bundle.js",
-    "type": "module"
-  },
-  "action": {
-    "default_icon": {
-      "48": "images/48.png"
-    }
-  },
-  "content_scripts": [
-    {
-      "matches": ["https://www.youtube.com/*", "https://chat.openai.com/*"],
-      "js": ["contentscript/index.bundle.js"],
-      "css": ["contentscript/yt_ai_summary.css"],
-      "all_frames": false
-    }
-  ],
-  "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
-  },
-  "icons": {
-    "48": "images/48.png"
-  }
+    "name": "__MSG_extensionName__",
+    "version": "1.4.0",
+    "manifest_version": 3,
+    "description": "__MSG_extensionDescription__",
+    "default_locale": "en",
+    "permissions": ["storage"],
+    "host_permissions": ["https://i.ytimg.com/*"],
+    "background": {
+        "service_worker": "background.min.js",
+        "type": "module"
+    },
+    "action": {
+        "default_icon": {
+            "16": "images/icon16.png",
+            "32": "images/icon32.png",
+            "48": "images/icon48.png"
+        }
+    },
+    "options_ui": {
+        "open_in_tab": true,
+        "page": "index.html"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://www.youtube.com/*"],
+            "js": [
+                "contentscript/youtube.min.js"
+            ],
+            "css": ["contentscript/youtube.min.css"],
+            "all_frames": false
+        },
+        {
+            "matches": ["https://chatgpt.com/*"],
+            "js": [
+                "contentscript/chatgpt.min.js"
+            ]
+        },
+        {
+            "matches": [
+                "https://muik.github.io/Ask-on-YouTube/pages/welcome.html"
+            ],
+            "js": [
+                "contentscript/welcome.min.js"
+            ]
+        }
+    ],
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    },
+    "icons": {
+        "16": "images/icon16.png",
+        "32": "images/icon32.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+    },
+    "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3rXKhsbdksY2lLhmyhZGheHfyazCZ6E0zkId2SmrvK3sYkqT3pmUjkQB8udNgX1W4MnY4kJ6ZLToXeuthZrqpSoHlUa314Ew6YVSPsOClIaPIYYsyiX3Z7WIsyp+ue0qH6Q+zSAxlmExbHPFnFcZ9SFAnjWrP6uvjkqbJVQcMQkGywXcfjoOExujHKFm4fLAXmRryMIpE3LqBYxm+TJKKpJHGHNcI2o4EBKRqDik16lKGj7kea/7WPpZTtRoz2Mke2HpPYT9rwFY7XCYr96BL2ivqY9EXeCRgAwVQkbdqUmIvvaZj3js4ob3I9RrSc8tgL6ODnwVRsVRkvBkKU5WOQIDAQAB"
 }
