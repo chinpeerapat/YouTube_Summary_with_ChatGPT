@@ -1,0 +1,98 @@
+{
+    "summary-play": {
+        "message": "Play"
+    },
+    "summary-pause": {
+        "message": "Pause"
+    },
+    "summary-ai-generate": {
+        "message": "Generate"
+    },
+    "summary-generate-and-play": {
+        "message": "Generate and Play"
+    },
+    "summary-expand": {
+        "message": "Expand"
+    },
+    "summary-collapse": {
+        "message": "Collapse"
+    },
+    "summary-more": {
+        "message": "More"
+    },
+    "summary-settings": {
+        "message": "Settings"
+    },
+    "summary-fri-waiting": {
+        "message": "Always ready to serve."
+    },
+    "summary-fri-generating-summary": {
+        "message": "Generating summary..."
+    },
+    "summary-fri-translating-subtitle": {
+        "message": "Translating subtitles..."
+    },
+    "summary-fri-generating-podcast": {
+        "message": "Generating Podcast..."
+    },
+    "summary-fri-generate-subtitle-error": {
+        "message": "Generate error, try again."
+    },
+    "summary-fri-finished": {
+        "message": "Generate finished."
+    },
+    "summary-generate-error": {
+        "message": "Generate error, please check Gemini API key in settings."
+    },
+    "summary-subtitle-generate": {
+        "message": "Subtitle Generate Type"
+    },
+    "summary-subtitle-none": {
+        "message": "None"
+    },
+    "summary-subtitle-translate": {
+        "message": "Subtitle Translate"
+    },
+    "summary-subtitle-to-podcast": {
+        "message": "Subtitle to Podcast"
+    },
+    "summary-pupup-copy": {
+        "message": "Copy"
+    }, 
+    "summary-pupup-download": {
+        "message": "Download"
+    },
+    "summary-pupup-youtube-subtitle": {
+        "message": "Youtube Subtitle"
+    },
+    "summary-pupup-auto-generate": {
+        "message": "Auto Generate"
+    },
+    "summary-pupup-auto-play": {
+        "message": "Auto Play"
+    },
+    "summary-pupup-language": {
+        "message": "AI Language"
+    },
+    "summary-start-generate": {
+        "message": "Fiday: Start Generate."
+    },
+    "summary-generating": {
+        "message": "Fiday: Generating..."
+    },
+    "summary-generate-finished": {
+        "message": "Fiday: Generate Finished."
+    },
+    "summary-popup-copy-success": {
+        "message": "Fiday: Copied to clipboard."
+    },
+    "summary-popup-generate-first-tip": {
+        "message": "Fiday: Content is empty, please generate first."
+    },
+    "summary-tip-no-youtube-transcript": {
+        "message": "Fiday: Cannot generate because the video does not have a YouTube transcript."
+    },
+    "summary-tip-download-success": {
+        "message": "Fiday: Download success."
+    }
+}

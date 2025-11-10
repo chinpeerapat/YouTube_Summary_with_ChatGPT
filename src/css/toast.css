@@ -1,0 +1,45 @@
+
+/* Toast Container */
+.fri-toast-container {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5000;
+    font-size: 14px;
+  }
+  
+  /* Toast */
+  .fri-toast {
+    padding: 12px 24px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: white;
+    opacity: 0;
+    transform: translateY(-40px);
+    transition: all 0.3s ease;
+  }
+  
+  .fri-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .fri-toast-success {
+    background-color: #4caf50;
+  }
+
+  .fri-toast-info {
+    background-color: #2196f3;
+  }
+  
+  .fri-toast-error {
+    background-color: #f44336;
+  }
+  
+  /* Test button states */
+  #testApiKey:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  

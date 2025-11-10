@@ -1,15 +1,23 @@
 .DS_Store
+mcp_screenshot/
+
+*.zip
 
 # dist directory
 dist/
 
+build/
+
+release/
+
 # IntelliJ
 .idea
 # VS Code
-.vscode
+#.vscode
 
 # npm
 package-lock.json
+node_modules0
 node_modules
 
 # Logs
@@ -63,6 +71,7 @@ typings/
 
 # Optional npm cache directory
 .npm
+.npmrc
 
 # Optional eslint cache
 .eslintcache
@@ -86,3 +95,5 @@ typings/
 
 # XCode
 UserInterfaceState.xcuserstate
+dist.zip
+src/tailwind.min.css

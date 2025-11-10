@@ -1,6 +1,19 @@
-# YouTube Summary with ChatGPT
+# YouTube Summary Extension
 
-YouTube Summary with ChatGPT is a simple Chrome Extension (manifest v3) that allows you to get both YouTube video transcripts and summary of the video with OpenAI's ChatGPT AI technology. Chrome Extension is available on [Chrome Web Store](https://chrome.google.com/webstore/detail/chatgpt-youtube-summary/nmmicjeknamkfloonkhhcjmomieiodli).
+## Overview
+
+The YouTube Summary Extension is a Chrome extension that provides multilingual summaries of YouTube videos using AI technology. It aims to enhance the user's video-watching experience by offering quick, concise summaries and additional features.
+
+## Features
+
+
+#### The Project is under development, the main features refer to [Product Requirements Document (PRD)](./prd.md)
+
+####  [Project Plan And Status](https://github.com/users/baoblackcoal/projects/2/views/1)
+
+
+### Start the Project from  [YouTube Summary with ChatGPT](https://github.com/kazuki-sf/YouTube_Summary_with_ChatGPT)
+
 
 ## How to Install
 
@@ -24,21 +37,22 @@ npm run build-release
 8. Click the `Load unpacked` button and select the **dist** directory.
 9. YouTube Summary with ChatGPT extension should be installed and active!
 
-## How to Use
 
-To use YouTube Summary with ChatGPT extension, follow these steps (or [watch this video](https://www.youtube.com/watch?v=pNxsdLif2cs)):
+## Environment Variables
 
-1. Go to any YouTube videos.
-2. Click the small box on the right top that says `Transcript & Summary`.
-3. Click `View AI Summary` button (It automatically copies the prompt for you and opens the ChatGPT page!)
-4. Hit `Cmd + V` if you use Mac
-5. You'll see a magic!
+The application requires the following environment variables to be set in a `.env` file:
 
-## Notes
+### API Keys
+- `GEMINI_API_KEY_DEV`: Google Gemini API key for development environment
+- `GEMINI_API_KEY_TEST`: Google Gemini API key for test environment
+- `GEMINI_API_KEY_PRODUCTION`: Google Gemini API key for production environment
 
-- According to OpenAI, ChatGPT is experiencing exceptionally high demand. They work on scaling their systems but I can't guarantee that ChatGPT keeps free and is open forever.
-- This code manually fetches the YouTube video transcripts, and the platform might change the system so I also cannot guarantee that the YouTube video transcript code works forever. I'll try my best to keep updated!
+### Speech Services
+- `SPEECH_KEY`: Azure Speech Services API key
+- `SPEECH_REGION`: Azure Speech Services region (e.g., 'eastus')
 
-## Feedback & Support
+Make sure to create a `.env` file in the root directory and add these variables with your own API keys before running the application.
 
-If you have any questions or feedback about YouTube Summary with ChatGPT Extension, please reach out to me on [Twitter](https://twitter.com/kazuki_sf_). Also, I'm building Glasp, a social web annotation tool to build your own AI models to write, search, and summarize better. If you're interested, please check out [Glasp](https://glasp.co/ai-summary).
+**Note**: Never commit your actual API keys to version control. The `.env` file should be added to your `.gitignore`.
+
+

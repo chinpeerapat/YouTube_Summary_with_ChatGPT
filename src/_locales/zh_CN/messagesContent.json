@@ -1,0 +1,98 @@
+{
+    "summary-play": {
+        "message": "播放"
+    },
+    "summary-pause": {
+        "message": "暂停"
+    },
+    "summary-ai-generate": {
+        "message": "生成"
+    },
+    "summary-generate-and-play": {
+        "message": "生成并播放"
+    },
+    "summary-expand": {
+        "message": "展开"
+    },
+    "summary-collapse": {
+        "message": "折叠"
+    },
+    "summary-more": {
+        "message": "更多"
+    },
+    "summary-settings": {
+        "message": "设置"
+    },
+    "summary-fri-waiting": {
+        "message": "随时等候吩咐。"
+    },
+    "summary-fri-generating-summary": {
+        "message": "正在生成总结..."
+    },
+    "summary-fri-translating-subtitle": {
+        "message": "正在生成字幕..."
+    },
+    "summary-fri-generating-podcast": {
+        "message": "正在生成播客..."
+    },
+    "summary-fri-generate-subtitle-error": {
+        "message": "生成错误，重新生成。"
+    },
+    "summary-fri-finished": {
+        "message": "生成完成。"
+    },
+    "summary-generate-error": {
+        "message": "生成错误，请检查设置中的Gemini API密钥。"
+    },
+    "summary-subtitle-generate": {
+        "message": "字幕生成类型"
+    },
+    "summary-subtitle-none": {
+        "message": "无"
+    },
+    "summary-subtitle-translate": {
+        "message": "字幕翻译"
+    },
+    "summary-subtitle-to-podcast": {
+        "message": "字幕转播客"
+    },
+    "summary-pupup-copy": {
+        "message": "复制"
+    },
+    "summary-pupup-download": {
+        "message": "下载"
+    },
+    "summary-pupup-youtube-subtitle": {
+        "message": "Youtube 字幕"
+    },
+    "summary-pupup-auto-generate": {
+        "message": "自动生成"
+    },
+    "summary-pupup-auto-play": {
+        "message": "自动播放"
+    },
+    "summary-pupup-language": {
+        "message": "AI 语言"
+    },
+    "summary-start-generate": {
+        "message": "Fiday: 开始生成。"
+    },
+    "summary-generating": {
+        "message": "Fiday: 正在生成..."
+    },
+    "summary-generate-finished": {
+        "message": "Fiday: 已生成完成。"
+    },
+    "summary-popup-copy-success": {
+        "message": "Fiday: 已复制到剪贴板。"
+    },
+    "summary-popup-generate-first-tip": {
+        "message": "Fiday: 内容为空，请先执行生成。"
+    },
+    "summary-tip-no-youtube-transcript": {
+        "message": "Fiday: 无法生成，因为视频没有 YouTube 字幕。"
+    },
+    "summary-tip-download-success": {
+        "message": "Fiday: 下载成功。"
+    }
+}
