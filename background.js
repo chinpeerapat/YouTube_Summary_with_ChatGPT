@@ -59,8 +59,41 @@ chrome.runtime.onConnect.addListener(function(port) {
     }
 });
 
+// Calculate appropriate max_tokens based on model and prompt length
+function calculateMaxTokens(prompt, model) {
+    // Rough estimation: 1 token ≈ 4 characters
+    const estimatedInputTokens = Math.ceil(prompt.length / 4);
+    const systemPromptTokens = 50; // Rough estimate for system message
+
+    // Model context windows and limits
+    const modelLimits = {
+        'gpt-5': { context: 128000, maxOutput: 16000 },
+        'gpt-5-mini': { context: 16000, maxOutput: 4000 },
+        'gpt-4-turbo': { context: 128000, maxOutput: 4096 },
+        'gpt-3.5-turbo': { context: 16000, maxOutput: 4096 }
+    };
+
+    const limits = modelLimits[model] || modelLimits['gpt-5-mini'];
+
+    // Calculate available tokens for response
+    const usedTokens = estimatedInputTokens + systemPromptTokens;
+    const availableTokens = limits.context - usedTokens;
+
+    // Use the smaller of: available tokens, max output for model, or a reasonable max
+    const maxTokens = Math.min(
+        availableTokens,
+        limits.maxOutput,
+        8000 // Reasonable maximum for summaries
+    );
+
+    // Ensure we have at least 500 tokens for the response
+    return Math.max(maxTokens, 500);
+}
+
 async function handleGenerateSummary(prompt, apiKey, model) {
     const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+    const selectedModel = model || 'gpt-5-mini';
+    const maxTokens = calculateMaxTokens(prompt, selectedModel);
 
     const response = await fetch(apiEndpoint, {
         method: 'POST',
@@ -69,7 +102,7 @@ async function handleGenerateSummary(prompt, apiKey, model) {
             'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-            model: model || 'gpt-3.5-turbo',
+            model: selectedModel,
             messages: [
                 {
                     role: 'system',
@@ -81,7 +114,7 @@ async function handleGenerateSummary(prompt, apiKey, model) {
                 }
             ],
             temperature: 0.7,
-            max_tokens: 1000,
+            max_tokens: maxTokens,
             stream: false
         })
     });
@@ -111,6 +144,8 @@ async function handleGenerateSummary(prompt, apiKey, model) {
 
 async function handleGenerateSummaryStream(prompt, apiKey, model, onChunk) {
     const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+    const selectedModel = model || 'gpt-5-mini';
+    const maxTokens = calculateMaxTokens(prompt, selectedModel);
 
     const response = await fetch(apiEndpoint, {
         method: 'POST',
@@ -119,7 +154,7 @@ async function handleGenerateSummaryStream(prompt, apiKey, model, onChunk) {
             'Authorization': `Bearer ${apiKey}`
         },
         body: JSON.stringify({
-            model: model || 'gpt-3.5-turbo',
+            model: selectedModel,
             messages: [
                 {
                     role: 'system',
@@ -131,7 +166,7 @@ async function handleGenerateSummaryStream(prompt, apiKey, model, onChunk) {
                 }
             ],
             temperature: 0.7,
-            max_tokens: 1000,
+            max_tokens: maxTokens,
             stream: true
         })
     });
@@ -214,7 +249,7 @@ async function handleTestApiKey(apiKey) {
                 'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify({
-                model: 'gpt-3.5-turbo',
+                model: 'gpt-5-mini',
                 messages: [{ role: 'user', content: 'Hello' }],
                 max_tokens: 5
             })

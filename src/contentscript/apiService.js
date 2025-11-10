@@ -6,7 +6,7 @@
 class ApiService {
   constructor() {
     this.apiKey = null;
-    this.model = 'gpt-3.5-turbo'; // Default model
+    this.model = 'gpt-5-mini'; // Default model
   }
 
   /**
@@ -16,7 +16,7 @@ class ApiService {
     try {
       const result = await chrome.storage.sync.get(['openaiApiKey', 'openaiModel']);
       this.apiKey = result.openaiApiKey || null;
-      this.model = result.openaiModel || 'gpt-3.5-turbo';
+      this.model = result.openaiModel || 'gpt-5-mini';
       return !!this.apiKey;
     } catch (error) {
       console.error('Failed to initialize API service:', error);
